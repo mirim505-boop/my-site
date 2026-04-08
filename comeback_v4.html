@@ -949,7 +949,19 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.06 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
+/* ── load images from images folder ── */
+function loadDefaultImages() {
+  for (let i = 0; i < TOTAL; i++) {
+    const imgPath = `images/landscape${i + 1}.jpeg`;
+    const img = document.getElementById(`sl${i}`);
+    if (img) { img.src = imgPath; img.classList.add('loaded'); }
+    const gsImg = document.getElementById(`gs${i}`);
+    if (gsImg) { gsImg.src = imgPath; gsImg.classList.add('loaded'); }
+  }
+}
+
 /* init */
+loadDefaultImages();
 updateSlide();
 </script>
 </body>
