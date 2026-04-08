@@ -446,7 +446,7 @@ body {
 
 /* Photo slot at top of card */
 .card-photo {
-  width: 100%; height: 180px;
+  width: 100%; height: 240px;
   background: var(--bg);
   position: relative;
   cursor: pointer;
@@ -457,7 +457,7 @@ body {
 }
 .card-photo img {
   position: absolute; inset: 0;
-  width: 100%; height: 100%; object-fit: cover;
+  width: 100%; height: 100%; object-fit: contain;
   display: none;
   transition: transform .4s ease;
 }
@@ -611,15 +611,17 @@ footer {
   position: fixed;
   top: 12px; right: 16px;
   z-index: 1000;
-  background: var(--ink); color: var(--white);
-  border: none; border-radius: 999px;
-  padding: 6px 14px;
-  font-size: 12px; font-weight: 500;
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px; font-weight: 600;
   cursor: pointer; font-family: inherit;
-  transition: opacity .2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  color: var(--ink);
+  transition: background .2s, color .2s;
+  letter-spacing: 0.5px;
 }
-.lang-toggle:hover { opacity: .8; }
+.lang-toggle:hover { background: var(--ink); color: var(--white); }
 
 @media (max-width: 820px) {
   .insta-stage { flex-direction: column; align-items: center; }
@@ -634,7 +636,7 @@ footer {
 </head>
 <body>
 
-<button class="lang-toggle" id="langToggle" onclick="toggleLang()">🇬🇧 EN</button>
+<button class="lang-toggle" id="langToggle" onclick="toggleLang()"><strong>한</strong>/EN</button>
 
 <div class="top-band" data-i18n="top-band">LINE Cloud Product <span>·</span> 2026 복직 인사 <span>·</span> 안녕하세요 👋</div>
 
@@ -1083,7 +1085,9 @@ function applyLang(lang) {
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
   const btn = document.getElementById('langToggle');
-  if (btn) btn.textContent = lang === 'ko' ? '🇬🇧 EN' : '🇰🇷 KO';
+  if (btn) btn.innerHTML = lang === 'ko'
+    ? '<strong>한</strong>/EN'
+    : '한/<strong>EN</strong>';
   document.documentElement.lang = lang;
 }
 
