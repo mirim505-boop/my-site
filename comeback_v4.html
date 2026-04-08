@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>어, 저 왔어요! — 복직 인사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sky:    #D4EEFF;
+  --mint:   #C8F0E4;
+  --lemon:  #FFF3C4;
+  --peach:  #FFE0D0;
+  --lilac:  #E8DEFF;
+  --grass:  #D8F0C8;
+  --bg:     #FAFAF8;
+  --ink:    #1A1A2E;
+  --mid:    #5A5A72;
+  --border: #E8E8E0;
+  --white:  #FFFFFF;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+.top-band {
+  background: var(--ink); color: #fff;
+  text-align: center; padding: 10px;
+  font-size: 12px; letter-spacing: .12em; font-weight: 300;
+}
+.top-band span { opacity: .5; margin: 0 8px; }
+
+/* ── HERO ── */
+.hero {
+  padding: 5rem 3rem 4rem;
+  text-align: center;
+  position: relative; overflow: hidden;
+  background: var(--white);
+  border-bottom: 1.5px solid var(--ink);
+}
+.hero-deco { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; z-index: 0; }
+.hero-deco.a { width:360px;height:360px; background:var(--sky);   top:-80px;  left:-80px; opacity:.6; }
+.hero-deco.b { width:300px;height:300px; background:var(--peach); top:-60px;  right:-60px;opacity:.5; }
+.hero-deco.c { width:280px;height:280px; background:var(--mint);  bottom:-80px;left:30%;  opacity:.4; }
+.hero-inner { position: relative; z-index: 1; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--lemon); border: 1.5px solid var(--ink);
+  border-radius: 999px; padding: 6px 16px;
+  font-size: 12px; font-weight: 500; margin-bottom: 2rem;
+  animation: bounceIn .6s cubic-bezier(.34,1.56,.64,1) both;
+}
+.hero-emoji {
+  font-size: clamp(3rem,8vw,5rem); display: block; margin-bottom: .5rem;
+  animation: waveHand 1.2s ease .4s both; transform-origin: 70% 80%;
+}
+@keyframes waveHand {
+  0%  { transform: rotate(0deg);   opacity:0; }
+  20% { transform: rotate(-15deg); opacity:1; }
+  40% { transform: rotate(15deg); }
+  60% { transform: rotate(-10deg); }
+  80% { transform: rotate(10deg); }
+  100%{ transform: rotate(0deg); }
+}
+@keyframes bounceIn { from{opacity:0;transform:scale(.7)} to{opacity:1;transform:scale(1)} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.hero h1 {
+  font-family: 'Gowun Batang', serif;
+  font-size: clamp(2.4rem,6vw,4rem); font-weight: 700;
+  line-height: 1.2; margin-bottom: 1.2rem;
+  animation: fadeUp .7s ease .2s both;
+}
+.hero h1 .highlight { display:inline-block; background:var(--lemon); border-radius:6px; padding:0 6px; }
+.hero-sub {
+  font-size: 15px; color: var(--mid); line-height: 1.9;
+  max-width: 480px; margin: 0 auto 2rem; font-weight: 300;
+  animation: fadeUp .7s ease .35s both;
+}
+.hero-chips { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; animation: fadeUp .7s ease .5s both; }
+.hero-chip { padding:5px 14px; border:1.5px solid var(--ink); border-radius:999px; font-size:12px; font-weight:400; }
+.hero-chip.sky   { background:var(--sky); }
+.hero-chip.mint  { background:var(--mint); }
+.hero-chip.peach { background:var(--peach); }
+.hero-chip.lemon { background:var(--lemon); }
+.hero-chip.lilac { background:var(--lilac); }
+
+/* ── STATS ── */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1.5px solid var(--ink); }
+.stat-item { padding:2.5rem 1.5rem; text-align:center; border-right:1.5px solid var(--ink); }
+.stat-item:last-child { border-right:none; }
+.stat-num { font-family:'Gowun Batang',serif; font-size:2.8rem; font-weight:700; line-height:1; margin-bottom:.4rem; }
+.stat-label { font-size:11px; color:var(--mid); letter-spacing:.08em; font-weight:300; }
+
+/* ═══════════════════════════════════
+   ── INSTAGRAM SLIDESHOW ──
+═══════════════════════════════════ */
+.gallery-section {
+  padding: 5rem 3rem;
+  background: var(--white);
+  border-bottom: 1.5px solid var(--ink);
+}
+.section-title { font-family:'Gowun Batang',serif; font-size:1.8rem; font-weight:700; margin-bottom:.5rem; }
+.section-desc  { font-size:13px; color:var(--mid); font-weight:300; margin-bottom:2.5rem; }
+
+/* Phone frame */
+.insta-stage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
+.phone-wrap {
+  flex-shrink: 0;
+  width: 320px;
+  position: relative;
+}
+
+/* Outer phone shell */
+.phone-shell {
+  background: #1A1A1A;
+  border-radius: 44px;
+  padding: 14px;
+  box-shadow:
+    0 0 0 1px #333,
+    0 30px 80px rgba(0,0,0,.35),
+    inset 0 0 0 1px #444;
+  position: relative;
+}
+
+/* Side buttons */
+.phone-shell::before {
+  content: '';
+  position: absolute;
+  left: -3px; top: 100px;
+  width: 3px; height: 60px;
+  background: #2a2a2a;
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 36px 0 #2a2a2a, 0 -50px 0 #2a2a2a;
+}
+.phone-shell::after {
+  content: '';
+  position: absolute;
+  right: -3px; top: 140px;
+  width: 3px; height: 72px;
+  background: #2a2a2a;
+  border-radius: 0 2px 2px 0;
+}
+
+/* Screen */
+.phone-screen {
+  background: #000;
+  border-radius: 32px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 9/19.5;
+}
+
+/* Dynamic island */
+.dynamic-island {
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 100px; height: 28px;
+  background: #000;
+  border-radius: 999px;
+  z-index: 20;
+}
+
+/* Instagram UI inside phone */
+.insta-app {
+  width: 100%; height: 100%;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Status bar */
+.status-bar {
+  height: 44px;
+  background: var(--white);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 20px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.status-time { font-size: 12px; font-weight: 700; }
+.status-icons { display: flex; gap: 5px; align-items: center; font-size: 10px; }
+
+/* Insta header */
+.insta-header {
+  display: flex; align-items: center;
+  padding: 8px 12px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.insta-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  padding: 2px;
+  flex-shrink: 0;
+}
+.insta-avatar-inner {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.insta-avatar-inner img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.insta-avatar-placeholder {
+  font-size: 13px; font-weight: 700; color: var(--ink);
+}
+.insta-username { font-size: 12px; font-weight: 700; flex: 1; }
+.insta-more { font-size: 16px; font-weight: 700; letter-spacing: .05em; color: var(--ink); line-height: 1; }
+
+/* Slideshow area */
+.slide-area {
+  position: relative;
+  width: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #f5f5f5;
+  aspect-ratio: 1;
+}
+
+.slides-track {
+  display: flex;
+  height: 100%;
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+}
+
+.slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.slide img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: none;
+}
+.slide img.loaded { display: block; }
+
+.slide-placeholder {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  pointer-events: none;
+  z-index: 1;
+}
+.slide-placeholder .sph-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(26,26,46,.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: rgba(26,26,46,.3);
+}
+.slide-placeholder .sph-num {
+  font-size: 10px; font-weight: 400;
+  color: rgba(26,26,46,.3);
+}
+.slide img.loaded ~ .slide-placeholder { display: none; }
+
+/* slide nav arrows */
+.slide-arrow {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  z-index: 10;
+  transition: background .2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+.slide-arrow:hover { background: white; }
+.slide-arrow.prev { left: 8px; }
+.slide-arrow.next { right: 8px; }
+.slide-arrow.hidden { display: none; }
+
+/* dot indicator */
+.slide-dots {
+  position: absolute;
+  bottom: 8px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 4px;
+  z-index: 10;
+}
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.6);
+  transition: all .2s;
+}
+.dot.active { background: white; transform: scale(1.2); }
+
+/* slide counter badge */
+.slide-counter {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: rgba(0,0,0,.55);
+  color: white;
+  font-size: 10px; font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 999px;
+  z-index: 10;
+}
+
+/* Insta action bar */
+.insta-actions {
+  display: flex; align-items: center;
+  padding: 8px 12px 4px;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.insta-actions .act-icon { font-size: 20px; cursor: default; }
+.insta-actions .act-icon:last-of-type { margin-left: auto; }
+.insta-likes { padding: 0 12px 2px; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+/* Insta caption */
+.insta-caption {
+  padding: 0 12px;
+  font-size: 11px; line-height: 1.55;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.insta-caption .cap-user { font-weight: 700; margin-right: 4px; }
+
+/* Insta nav bar */
+.insta-nav {
+  margin-top: auto;
+  border-top: 0.5px solid #e0e0e0;
+  display: flex;
+  padding: 8px 0 20px;
+  justify-content: space-around;
+  flex-shrink: 0;
+}
+.nav-icon { font-size: 20px; cursor: default; }
+
+/* Right side instructions */
+.insta-guide {
+  flex: 1;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+  padding-top: 1rem;
+}
+.guide-title {
+  font-family: 'Gowun Batang', serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--ink);
+}
+.guide-desc {
+  font-size: 13px; color: var(--mid);
+  line-height: 1.8; font-weight: 300;
+}
+.guide-slots {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin-top: .4rem;
+}
+.guide-slot {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1.5px dashed var(--border);
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--mid);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  position: relative;
+  overflow: hidden;
+}
+.guide-slot:hover { border-color: var(--ink); background: #f0f0ee; }
+.guide-slot img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  display: none;
+}
+.guide-slot img.loaded { display: block; }
+.guide-slot .slot-n { font-size: 11px; font-weight: 500; color: rgba(26,26,46,.3); pointer-events: none; }
+.guide-slot img.loaded ~ .slot-n { display: none; }
+
+.guide-add-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ink); color: var(--white);
+  border: none; border-radius: 999px;
+  padding: 9px 18px; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: opacity .2s;
+  font-family: inherit;
+  width: fit-content;
+}
+.guide-add-btn:hover { opacity: .8; }
+
+/* ═══════════════════════════════════
+   ── STORY CARDS (with photo) ──
+═══════════════════════════════════ */
+.story-section {
+  padding: 5rem 3rem;
+  background: var(--bg);
+  border-bottom: 1.5px solid var(--ink);
+}
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 2.5rem;
+}
+
+.story-card {
+  background: var(--white);
+  border: 1.5px solid var(--ink);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.story-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 var(--ink); }
+
+/* Photo slot at top of card */
+.card-photo {
+  width: 100%; height: 180px;
+  background: var(--bg);
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 6px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.card-photo img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  display: none;
+  transition: transform .4s ease;
+}
+.card-photo img.loaded { display: block; }
+.card-photo:hover img { transform: scale(1.04); }
+.card-photo .cp-hint {
+  font-size: 11px; color: rgba(26,26,46,.3);
+  font-weight: 300; pointer-events: none; z-index: 1;
+  text-align: center;
+}
+.card-photo .cp-icon {
+  width: 30px; height: 30px;
+  border-radius: 50%; border: 1.5px dashed rgba(26,26,46,.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: rgba(26,26,46,.25);
+  pointer-events: none; z-index: 1;
+}
+.card-photo img.loaded ~ .cp-icon,
+.card-photo img.loaded ~ .cp-hint { display: none; }
+
+/* Photo bg colors */
+.cpbg-1 { background: var(--sky); }
+.cpbg-2 { background: var(--peach); }
+.cpbg-3 { background: var(--mint); }
+.cpbg-4 { background: var(--lilac); }
+
+.card-content {
+  padding: 1.5rem;
+  position: relative;
+}
+.card-bg {
+  position: absolute; top: -24px; right: -24px;
+  width: 80px; height: 80px;
+  border-radius: 50%; opacity: .3;
+}
+.story-card:nth-child(1) .card-bg { background: var(--sky); }
+.story-card:nth-child(2) .card-bg { background: var(--peach); }
+.story-card:nth-child(3) .card-bg { background: var(--mint); }
+.story-card:nth-child(4) .card-bg { background: var(--lilac); }
+
+.card-emoji { font-size: 1.8rem; margin-bottom: .8rem; display: block; }
+.story-card h3 { font-family:'Gowun Batang',serif; font-size:17px; font-weight:700; margin-bottom:.7rem; line-height:1.35; }
+.story-card p  { font-size:13px; color:var(--mid); line-height:1.85; font-weight:300; }
+.card-tag {
+  display: inline-block; margin-top: 1rem;
+  font-size: 11px; font-weight: 500;
+  padding: 3px 10px; border-radius: 999px;
+  border: 1px solid var(--ink);
+}
+
+/* ── TIMELINE ── */
+.timeline-section {
+  padding: 5rem 3rem;
+  background: var(--ink); color: #fff;
+  border-bottom: 1.5px solid var(--ink);
+}
+.timeline-section .section-title { color: #fff; }
+.timeline-section .section-desc  { color: rgba(255,255,255,.45); }
+.timeline-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 0; margin-top: 2.5rem; position: relative;
+}
+.timeline-row::after {
+  content: ''; position: absolute;
+  top: 24px; left: 12%; right: 12%;
+  height: 1px; background: rgba(255,255,255,.15);
+}
+.tl-item { padding: 0 1.5rem; padding-top: 3rem; position: relative; }
+.tl-dot {
+  position: absolute; top: 17px; left: 1.5rem;
+  width: 14px; height: 14px;
+  border-radius: 50%; border: 2px solid rgba(255,255,255,.4);
+}
+.tl-dot.active { background: var(--lemon); border-color: var(--lemon); }
+.tl-date  { font-size:11px; color:rgba(255,255,255,.35); letter-spacing:.1em; margin-bottom:.5rem; font-weight:300; }
+.tl-title { font-family:'Gowun Batang',serif; font-size:15px; font-weight:700; color:#fff; margin-bottom:.5rem; }
+.tl-desc  { font-size:12px; color:rgba(255,255,255,.5); line-height:1.75; font-weight:300; }
+
+/* ── MSG ── */
+.msg-section {
+  padding: 6rem 3rem; background: var(--lemon);
+  border-bottom: 1.5px solid var(--ink); text-align: center;
+}
+.msg-section h2 {
+  font-family: 'Gowun Batang', serif;
+  font-size: clamp(1.6rem,4vw,2.6rem); font-weight: 700;
+  line-height: 1.5; margin-bottom: 1.5rem;
+  max-width: 640px; margin-left: auto; margin-right: auto;
+}
+.msg-section p { font-size:14px; color:var(--mid); line-height:2; font-weight:300; max-width:480px; margin:0 auto 2.5rem; }
+.skill-tags { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; }
+.skill-tag {
+  padding:8px 18px; background:var(--white);
+  border:1.5px solid var(--ink); border-radius:999px;
+  font-size:13px; font-weight:500;
+  transition: background .2s, transform .2s;
+}
+.skill-tag:hover { background:var(--ink); color:var(--lemon); transform:scale(1.05); cursor:default; }
+
+/* 10x badge */
+.tenx-badge {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: var(--ink); color: var(--white);
+  border-radius: 14px; padding: 16px 32px;
+  margin: .4rem auto 0;
+  animation: tenxPulse 2.4s ease infinite;
+}
+@keyframes tenxPulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(26,26,46,0); }
+  50%     { transform: scale(1.04); box-shadow: 0 8px 24px rgba(26,26,46,.2); }
+}
+.tenx-text {
+  font-family: 'Gowun Batang', serif;
+  font-size: 2.2rem; font-weight: 700; letter-spacing: .04em;
+}
+.tenx-sweat {
+  font-size: 2.2rem;
+  display: inline-block;
+  animation: sweatShake .55s ease infinite alternate;
+  transform-origin: center bottom;
+}
+@keyframes sweatShake {
+  from { transform: rotate(-10deg) translateY(0); }
+  to   { transform: rotate(10deg) translateY(-3px); }
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 2rem 3rem; background: var(--ink);
+  color: rgba(255,255,255,.35); font-size:11px;
+  letter-spacing:.08em; display:flex;
+  justify-content:space-between; align-items:center; font-weight:300;
+}
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:2rem; left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--ink); color:#fff;
+  padding:10px 22px; border-radius:999px;
+  font-size:13px; opacity:0; transition:all .3s ease;
+  z-index:999; white-space:nowrap; pointer-events:none;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .65s ease,transform .65s ease; }
+.reveal.on { opacity:1; transform:translateY(0); }
+
+@media (max-width: 820px) {
+  .insta-stage { flex-direction: column; align-items: center; }
+  .insta-guide { max-width: 100%; }
+  .stats { grid-template-columns: repeat(2,1fr); }
+  .stats .stat-item:nth-child(2) { border-right: none; }
+  .story-grid { grid-template-columns: 1fr; }
+  .timeline-row { grid-template-columns: 1fr 1fr; }
+  .timeline-row::after { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-band">LINE Cloud Product <span>·</span> 2026 복직 인사 <span>·</span> 안녕하세요 👋</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-deco a"></div><div class="hero-deco b"></div><div class="hero-deco c"></div>
+  <div class="hero-inner">
+    <div class="badge">🎉 2년 만에 돌아왔어요!</div>
+    <span class="hero-emoji">👋</span>
+    <h1>안녕하세요,<br><span class="highlight">저 다시 왔어요</span> 😄</h1>
+    <p class="hero-sub">
+      육아휴직 2년, 뉴질랜드에서 한 바탕 살다 왔습니다.<br>
+      도시락 싸고, 양 보고, 플랫화이트 마시다 돌아왔습니다.<br>
+      잘 부탁드려요!
+    </p>
+    <div class="hero-chips">
+      <span class="hero-chip sky">☁️ Cloud Product</span>
+      <span class="hero-chip mint">🌿 뉴질랜드 생존자</span>
+      <span class="hero-chip peach">👶 투썬 학부모</span>
+      <span class="hero-chip lemon">✈️ 귀국 완료</span>
+      <span class="hero-chip lilac">💻 복직 D-0</span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats reveal">
+  <div class="stat-item"><div class="stat-num">2년</div><div class="stat-label">휴직 기간</div></div>
+  <div class="stat-item"><div class="stat-num">NZ</div><div class="stat-label">체류 국가</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">아이들과 보낸 시간</div></div>
+  <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">복직 의지</div></div>
+</section>
+
+<!-- ── INSTAGRAM GALLERY ── -->
+<section class="gallery-section reveal">
+  <div class="section-title">📸 2년의 하이라이트 릴</div>
+  <div class="section-desc">10장의 사진이 인스타그램 스타일로 넘어갑니다</div>
+
+  <div class="insta-stage">
+
+    <!-- Phone -->
+    <div class="phone-wrap">
+      <div class="phone-shell">
+        <div class="phone-screen">
+          <div class="dynamic-island"></div>
+
+          <div class="insta-app">
+            <!-- status -->
+            <div class="status-bar">
+              <span class="status-time">9:41</span>
+              <span class="status-icons">▲▲▲ WiFi 🔋</span>
+            </div>
+
+            <!-- header -->
+            <div class="insta-header">
+              <div class="insta-avatar">
+                <div class="insta-avatar-inner">
+                  <img id="avatar-img" alt="">
+                  <span class="insta-avatar-placeholder" id="avatar-ph">나</span>
+                </div>
+              </div>
+              <span class="insta-username">nz_comeback_2026</span>
+              <span class="insta-more">···</span>
+            </div>
+
+            <!-- slides -->
+            <div class="slide-area" id="slideArea">
+              <div class="slides-track" id="slidesTrack"></div>
+
+              <button class="slide-arrow prev hidden" id="prevBtn" onclick="moveSlide(-1)">‹</button>
+              <button class="slide-arrow next" id="nextBtn" onclick="moveSlide(1)">›</button>
+
+              <div class="slide-dots" id="slideDots"></div>
+              <div class="slide-counter" id="slideCounter">1 / 10</div>
+            </div>
+
+            <!-- actions -->
+            <div class="insta-actions">
+              <span class="act-icon">🤍</span>
+              <span class="act-icon">💬</span>
+              <span class="act-icon">↗️</span>
+              <span class="act-icon">🔖</span>
+            </div>
+            <div class="insta-likes">좋아요 <strong id="likeCount">247</strong>개</div>
+            <div class="insta-caption">
+              <span class="cap-user">nz_comeback_2026</span>
+              2년간의 뉴질랜드 생활을 마치고 돌아왔습니다 🌿✈️ #뉴질랜드 #복직 #육아휴직
+            </div>
+
+            <!-- nav bar -->
+            <div class="insta-nav">
+              <span class="nav-icon">🏠</span>
+              <span class="nav-icon">🔍</span>
+              <span class="nav-icon">➕</span>
+              <span class="nav-icon">🎬</span>
+              <div class="insta-avatar" style="width:26px;height:26px;">
+                <div class="insta-avatar-inner" style="font-size:10px">나</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guide panel -->
+    <div class="insta-guide">
+      <div class="guide-title">사진 10장을 골라서 올려주세요</div>
+      <div class="guide-desc">
+        아래 칸을 클릭하면 사진을 선택할 수 있어요.<br>
+        업로드한 순서대로 폰 화면에서 슬라이드됩니다.
+      </div>
+      <div class="guide-slots" id="guideSlots"></div>
+      <button class="guide-add-btn" onclick="triggerBulkUpload()">
+        + 사진 한꺼번에 올리기
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── STORY CARDS ── -->
+<section class="story-section reveal">
+  <div class="section-title">🗂️ 2년 동안 이런 걸 했어요</div>
+  <div class="section-desc">일 없이도 꽤 바빴습니다 😅</div>
+  <div class="story-grid">
+
+    <div class="story-card">
+      <div class="card-photo cpbg-1" onclick="uploadCard('sc1','자연 속 운동인')">
+        <img id="sc1" alt="">
+        <div class="cp-icon">+</div>
+        <span class="cp-hint">사진 클릭해서 추가</span>
+      </div>
+      <div class="card-content">
+        <div class="card-bg"></div>
+        <span class="card-emoji">🏕️</span>
+        <h3>자연 속 운동인</h3>
+        <p>운동 이외에는 할 것이 없다....러닝, 트래킹, 골프, 수영, 강제 운동인</p>
+        <span class="card-tag" style="background:var(--sky)">🌿 자연 속 운동인</span>
+      </div>
+    </div>
+
+    <div class="story-card">
+      <div class="card-photo cpbg-2" onclick="uploadCard('sc2','외국살이 고난기')">
+        <img id="sc2" alt="">
+        <div class="cp-icon">+</div>
+        <span class="cp-hint">사진 클릭해서 추가</span>
+      </div>
+      <div class="card-content">
+        <div class="card-bg"></div>
+        <span class="card-emoji">📚</span>
+        <h3>외국살이 녹록치 않더라구요</h3>
+        <p>스몰토크 적응기, 픽드랍의 늪, 삼시세끼와 도시락 지옥, 집에 물이 새요..., 여행 중에 맹장수술?</p>
+        <span class="card-tag" style="background:var(--peach)">외국살이 고난기</span>
+      </div>
+    </div>
+
+    <div class="story-card">
+      <div class="card-photo cpbg-3" onclick="uploadCard('sc3','현지 문화 체험')">
+        <img id="sc3" alt="">
+        <div class="cp-icon">+</div>
+        <span class="cp-hint">사진 클릭해서 추가</span>
+      </div>
+      <div class="card-content">
+        <div class="card-bg"></div>
+        <span class="card-emoji">🥝</span>
+        <h3>현지인처럼 살아봤습니다</h3>
+        <p>키위들이랑 어울리고, 파머스마켓 가고, 파티도 하고(영어 강제 리스닝). 한인마트 덕분에 한국 음식도 해결 😄</p>
+        <span class="card-tag" style="background:var(--mint)">🌏 현지 문화 체험</span>
+      </div>
+    </div>
+
+
+
+  </div>
+</section>
+
+
+<!-- MSG -->
+<section class="msg-section reveal">
+  <h2>
+    넓게 보고, 느리게 사는 법을<br>배웠습니다.<br>
+  </h2>
+  <p style="font-size:15px; color:var(--ink); font-weight:400; margin-bottom:.6rem;">
+    그런데... 어제 회사 슬로건을 봤어요.
+  </p>
+  <div class="tenx-badge">
+    <span class="tenx-text">10x Faster</span>
+    <span class="tenx-sweat">😅</span>
+  </div>
+  <p style="margin-top:1.6rem; font-size:15px; color:var(--ink); font-weight:500;">
+    다시 빠르게 사는 법도 배워야겠네요 😅
+  </p>
+  <p>
+    돌아올 수 있는 곳이 있어서 기쁩니다.<br>
+    잘 부탁드릴게요 🙏
+  </p>
+  <div class="skill-tags">
+    <span class="skill-tag">☁️ Cloud Product 기획</span>
+    <span class="skill-tag">🌍 글로벌 사용자 시각</span>
+    <span class="skill-tag">👀 UX 새 눈</span>
+    <span class="skill-tag">⚡ 복직 에너지</span>
+    <span class="skill-tag">🤝 협업 의지</span>
+  </div>
+</section>
+
+<footer>
+  <span>LINE · 2026년 복직</span>
+  <span>반갑습니다! 👋</span>
+</footer>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="fileInput" accept="image/*" style="display:none">
+<input type="file" id="bulkInput" accept="image/*" multiple style="display:none">
+<input type="file" id="cardInput" accept="image/*" style="display:none">
+<input type="file" id="avatarInput" accept="image/*" style="display:none">
+
+<script>
+/* ── slide state ── */
+const TOTAL = 10;
+let curSlide = 0;
+const slidePhotos = new Array(TOTAL).fill(null); // blob URLs
+
+/* ── build slides & guide slots ── */
+const track = document.getElementById('slidesTrack');
+const dotsEl = document.getElementById('slideDots');
+const guideEl = document.getElementById('guideSlots');
+
+for (let i = 0; i < TOTAL; i++) {
+  // slide
+  const sl = document.createElement('div');
+  sl.className = 'slide';
+  sl.dataset.idx = i;
+  sl.innerHTML = `<img id="sl${i}" alt=""><div class="slide-placeholder"><div class="sph-icon">+</div><span class="sph-num">${i+1}</span></div>`;
+  sl.addEventListener('click', () => { curSlot = i; document.getElementById('fileInput').click(); showToast('사진 ' + (i+1) + ' 선택'); });
+  track.appendChild(sl);
+
+  // dot
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.dataset.i = i;
+  dotsEl.appendChild(d);
+
+  // guide slot
+  const gs = document.createElement('div');
+  gs.className = 'guide-slot';
+  gs.innerHTML = `<img id="gs${i}" alt=""><span class="slot-n">${i+1}</span>`;
+  gs.addEventListener('click', () => { curSlot = i; document.getElementById('fileInput').click(); showToast('사진 ' + (i+1) + ' 선택'); });
+  guideEl.appendChild(gs);
+}
+
+/* ── slide navigation ── */
+function updateSlide() {
+  track.style.transform = `translateX(-${curSlide * 100}%)`;
+  document.getElementById('slideCounter').textContent = `${curSlide + 1} / ${TOTAL}`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === curSlide));
+  document.getElementById('prevBtn').classList.toggle('hidden', curSlide === 0);
+  document.getElementById('nextBtn').classList.toggle('hidden', curSlide === TOTAL - 1);
+  // randomise likes slightly
+  document.getElementById('likeCount').textContent = 200 + curSlide * 17 + Math.floor(Math.random() * 10);
+}
+function moveSlide(dir) { curSlide = Math.max(0, Math.min(TOTAL - 1, curSlide + dir)); updateSlide(); }
+
+/* touch swipe on slide area */
+let tsX = 0;
+document.getElementById('slideArea').addEventListener('touchstart', e => tsX = e.touches[0].clientX);
+document.getElementById('slideArea').addEventListener('touchend', e => {
+  const dx = tsX - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 30) moveSlide(dx > 0 ? 1 : -1);
+});
+
+/* ── photo upload ── */
+let curSlot = 0;
+let curCard = null;
+
+function setSlidePhoto(idx, url) {
+  slidePhotos[idx] = url;
+  const img = document.getElementById('sl' + idx);
+  img.src = url; img.classList.add('loaded');
+  const gs  = document.getElementById('gs' + idx);
+  gs.src = url; gs.classList.add('loaded');
+  // also update guide slot img
+  const gsEl = guideEl.children[idx].querySelector('img');
+  gsEl.src = url; gsEl.classList.add('loaded');
+}
+
+/* single slide slot */
+document.getElementById('fileInput').addEventListener('change', function() {
+  if (!this.files[0]) return;
+  setSlidePhoto(curSlot, URL.createObjectURL(this.files[0]));
+  showToast('✅ 사진 ' + (curSlot + 1) + ' 업로드 완료!');
+  curSlide = curSlot; updateSlide();
+  this.value = '';
+});
+
+/* bulk upload */
+function triggerBulkUpload() { document.getElementById('bulkInput').click(); }
+document.getElementById('bulkInput').addEventListener('change', function() {
+  const files = Array.from(this.files).slice(0, TOTAL);
+  files.forEach((f, i) => setSlidePhoto(i, URL.createObjectURL(f)));
+  showToast('✅ ' + files.length + '장 업로드 완료!');
+  curSlide = 0; updateSlide();
+  this.value = '';
+});
+
+/* story card photo */
+function uploadCard(id, label) { curCard = id; document.getElementById('cardInput').click(); showToast('📎 ' + label + ' 사진 선택'); }
+document.getElementById('cardInput').addEventListener('change', function() {
+  if (!this.files[0] || !curCard) return;
+  const img = document.getElementById(curCard);
+  img.src = URL.createObjectURL(this.files[0]);
+  img.classList.add('loaded');
+  showToast('✅ 사진 업로드 완료!');
+  this.value = '';
+});
+
+/* ── toast ── */
+const toast = document.getElementById('toast');
+function showToast(msg) {
+  toast.textContent = msg; toast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 2400);
+}
+
+/* ── scroll reveal ── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { setTimeout(() => e.target.classList.add('on'), i * 60); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* init */
+updateSlide();
+</script>
+</body>
+</html>
